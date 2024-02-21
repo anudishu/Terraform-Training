@@ -28,9 +28,9 @@ resource "google_compute_instance" "web2" {
       // Ephemeral public IP
     }
   }
-   lifecycle {
-    prevent_destroy = true # Default is false
-  }
+   #lifecycle {
+    #prevent_destroy = true # Default is false
+  #}
   metadata_startup_script = <<-EOF
   sudo apt-get update && \
   sudo apt-get install apache2 -y && \
@@ -57,9 +57,9 @@ resource "google_compute_instance" "web3" {
       // Ephemeral public IP
     }
   }
-    lifecycle {
-    prevent_destroy = true # Default is false
-  }
+    #lifecycle {
+    #prevent_destroy = true # Default is false
+  #}
 
   metadata_startup_script = <<-EOF
   sudo apt-get update && \
