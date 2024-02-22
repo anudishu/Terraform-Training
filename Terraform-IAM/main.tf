@@ -1,14 +1,30 @@
-provider "google" {
-  credentials = file("<YOUR-CREDENTIALS-FILE>.json")
-  project     = "<YOUR-PROJECT-ID>"
-  region      = "<YOUR-REGION>"
+
+# Varibales
+variable "project" {
+    default = "mindful-marking-388908"
 }
+
+variable "region" {
+    default = "us-central1"
+}
+##########################################
+
+
+
+provider "google" {
+  credentials = file("key.json")
+  project     = var.project
+  region      = var.region
+}
+
+
+
 
 # Optionally, specify a terraform backend to store state
 terraform {
   backend "gcs" {
-    bucket  = "<YOUR-TERRAFORM-STATE-BUCKET>"
-    prefix  = "terraform/state"
+    bucket  = "<my-demo-bucket"
+    prefix  = "terraform/iam.tfstate"
   }
 }
 
@@ -37,4 +53,17 @@ resource "google_project_iam_custom_role" "limited_compute_role" {
     "compute.instances.start",
     "compute.instances.stop"
   ]
+}
+
+# create Second Service Account 
+resource "google_service_account" "limited_compute_sa" {
+  account_id   = "limited-compute-account"
+  display_name = "Limited Compute Service Account"
+}
+
+# Attach or bind the custom role with  Second service Account  
+resource "google_project_iam_member" "limited_compute_role_binding" {
+  project = var.project
+  role    = "projects/${var.project}/roles/LimitedComputeRole"
+  member  = "serviceAccount:${google_service_account.limited_compute_sa.email}"
 }
