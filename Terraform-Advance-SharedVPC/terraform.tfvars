@@ -1,0 +1,5 @@
+region                = "us-central1"
+region_zone           = "us-central1-b"
+credentials_file_path = "key.json"
+org_id                = "289967738514"
+#billing_account_id = "01DEF7-171902-5CFC29"	
